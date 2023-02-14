@@ -1,0 +1,10 @@
+version: v1
+plugins:
+  - plugin: cpp
+    out: gen/Private/pb
+  - plugin: cpp-grpc
+    out: gen/Private/pb
+    path: ../ThirdParty/grpc/bin/grpc_cpp_plugin.exe
+  - plugin: turbolink
+    out: gen/
+    path: ../Tools/protoc-gen-turbolink.exe

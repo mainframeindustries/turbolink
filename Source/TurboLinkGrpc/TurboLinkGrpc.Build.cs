@@ -47,6 +47,9 @@ public class TurboLinkGrpc : ModuleRules
 			}
 		);
 		
+		if(Target.Platform.ToString() == "XSX")
+			PrivateDefinitions.Add("PLATFORM_XSX=1");
+		
 		//ThirdParty Libraries
 		ConfigurePlatform(Target.Platform.ToString(), Target.Configuration);
 	}
@@ -83,11 +86,16 @@ public class TurboLinkGrpc : ModuleRules
 	};
 	private List<string> AbseilLibs = new List<string>
 	{
-		"absl_hash", "absl_city","absl_wyhash", "absl_raw_hash_set", "absl_hashtablez_sampler", "absl_exponential_biased", "absl_statusor",
-		"absl_bad_variant_access", "absl_status", "absl_cord", "absl_str_format_internal", "absl_synchronization", "absl_stacktrace",
-		"absl_symbolize", "absl_debugging_internal", "absl_demangle_internal", "absl_graphcycles_internal", "absl_malloc_internal", "absl_time",
-		"absl_strings", "absl_throw_delegate", "absl_strings_internal", "absl_base", "absl_spinlock_wait", "absl_int128", "absl_civil_time",
-		"absl_time_zone", "absl_bad_optional_access", "absl_raw_logging_internal", "absl_log_severity",
+		"absl_raw_hash_set", "absl_hashtablez_sampler", "absl_hash", "absl_city", "absl_low_level_hash", "absl_statusor", 
+		"absl_bad_variant_access", "absl_status", "absl_strerror", "absl_random_distributions", "absl_random_seed_sequences", 
+		"absl_random_internal_pool_urbg", "absl_random_internal_randen", "absl_random_internal_randen_hwaes", 
+		"absl_random_internal_randen_hwaes_impl", "absl_random_internal_randen_slow", "absl_random_internal_platform", 
+		"absl_random_internal_seed_material", "absl_random_seed_gen_exception", "absl_cord", "absl_bad_optional_access", 
+		"absl_cordz_info", "absl_cord_internal", "absl_cordz_functions", "absl_exponential_biased", "absl_cordz_handle", 
+		"absl_str_format_internal", "absl_synchronization", "absl_stacktrace", "absl_symbolize", "absl_debugging_internal", 
+		"absl_demangle_internal", "absl_graphcycles_internal", "absl_malloc_internal", "absl_time", "absl_strings", 
+		"absl_throw_delegate", "absl_int128", "absl_strings_internal", "absl_base", "absl_spinlock_wait", 
+		"absl_raw_logging_internal", "absl_log_severity", "absl_civil_time", "absl_time_zone"
 	};
 	private List<string> Re2Libs = new List<string>
 	{
@@ -171,6 +179,14 @@ public abstract class TurboLinkPlatform
 }
 
 public class TurboLinkPlatform_Win64 : TurboLinkPlatform
+{
+	public override string LibrariesPath { get { return "win64/"; } }
+	public override List<string> Architectures() { return new List<string> { "" }; }
+	public override string LibraryPrefixName { get { return ""; } }
+	public override string LibraryPostfixName { get { return ".lib"; } }
+}
+
+public class TurboLinkPlatform_XSX : TurboLinkPlatform
 {
 	public override string LibrariesPath { get { return "win64/"; } }
 	public override List<string> Architectures() { return new List<string> { "" }; }
