@@ -40,6 +40,19 @@ void UTurboLinkGrpcManager::InitManager()
 	//Create global completion queue
 	d->CompletionQueue = std::make_unique<grpc::CompletionQueue>();
 	bIsInitialized = true;
+
+	// Connect to all service endpoint if enable ConnectOnInit
+	FTurboLinkGrpcModule* turboLinkModule = FModuleManager::GetModulePtr<FTurboLinkGrpcModule>("TurboLinkGrpc");
+	UTurboLinkGrpcConfig* config = turboLinkModule->GetTurboLinkGrpcConfig();
+	if (config->ConnectOnInit)
+	{
+		for (int32 i = 0; i < seriviceClasses.Num(); i++)
+		{
+			UClass* serviceClass = seriviceClasses[i];
+			UGrpcService* service = MakeService(serviceClass->GetName());
+			service->Connect();
+		}
+	}
 }
 
 void UTurboLinkGrpcManager::Shutdown()
