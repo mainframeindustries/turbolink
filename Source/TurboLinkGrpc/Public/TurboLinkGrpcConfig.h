@@ -12,11 +12,6 @@ class TURBOLINKGRPC_API UTurboLinkGrpcConfig : public UObject
 	GENERATED_BODY()
 
 public:
-	//Connect to all service endpoints when Init the TurbolinkGrpcManager. 
-	//Defaults to false. 
-	UPROPERTY(Config, EditAnywhere, Category = "Channel Config")
-	bool ConnectOnInit = false;
-	
 	//Enables retry functionality. 
 	//Defaults to true.  When enabled, configurable retries are enabled when they are configured via the service config.
 	UPROPERTY(Config, EditAnywhere, Category = "Channel Config")
