@@ -47,6 +47,11 @@ public:
 		meta = (EditCondition = "EnableServerSideTLS", EditConditionHides))
 	FString ServerRootCerts;
 
+	//Enable JWT Authentication. Include JWT token in every gRPC request header.
+	//client will include avatar token, unreal server will include server token
+	UPROPERTY(Config, EditAnywhere, Category = "Connection Config")
+	bool EnableJWTAuth = false;
+	
 	//Default grpc services endpoint.
 	UPROPERTY(Config, EditAnywhere, Category = "Services Config")
 	FString DefaultEndPoint;

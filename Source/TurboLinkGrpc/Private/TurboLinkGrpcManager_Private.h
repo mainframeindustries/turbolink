@@ -5,6 +5,22 @@
 #include <grpcpp/grpcpp.h>
 #include <set>
 
+class JWTTokenAuthenticator : public grpc::MetadataCredentialsPlugin {
+ public:
+  JWTTokenAuthenticator(const grpc::string& ticket) : ticket_(ticket) {}
+
+  virtual grpc::Status GetMetadata(
+      grpc::string_ref service_url, grpc::string_ref method_name,
+      const grpc::AuthContext& channel_auth_context,
+      std::multimap<grpc::string, grpc::string>* metadata) override {
+    metadata->insert(std::make_pair("x-custom-auth-ticket", ticket_));
+    return grpc::Status::OK;
+  }
+
+ private:
+  grpc::string ticket_;
+};
+
 class UTurboLinkGrpcManager::Private
 {
 public:
@@ -38,4 +54,5 @@ public:
 public:
 	std::map<std::string, std::shared_ptr<ServiceChannel>> ChannelMap;
 	std::unique_ptr<grpc::CompletionQueue> CompletionQueue;
+	FString AuthToken = "";
 };
