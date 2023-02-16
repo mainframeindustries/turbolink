@@ -1,6 +1,7 @@
 #include "TurboLinkGrpcManager.h"
 #include "TurboLinkGrpcManager_Private.h"
 #include "TurboLinkGrpcContext.h"
+#include "TurboLinkGrpcManager_Private.h"
 #include "TurboLinkGrpcModule.h"
 
 UTurboLinkGrpcManager::UTurboLinkGrpcManager()
@@ -214,4 +215,9 @@ FGrpcContextHandle UTurboLinkGrpcManager::GetNextContextHandle()
 {
 	FGrpcContextHandle nextHandle(++NextContextHandle);
 	return nextHandle;
+}
+
+void UTurboLinkGrpcManager::SetAuthToken(const FString Token)
+{
+	d->AuthToken = Token;
 }

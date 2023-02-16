@@ -26,6 +26,8 @@ public:
 	void RemoveTag(void* Tag);
 
 	FGrpcContextHandle GetNextContextHandle();
+
+	void SetAuthToken(const FString Token);
 public:
 	class Private;
 	Private* const d=nullptr;

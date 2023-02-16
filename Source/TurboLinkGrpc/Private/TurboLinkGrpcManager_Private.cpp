@@ -47,8 +47,21 @@ std::shared_ptr<UTurboLinkGrpcManager::Private::ServiceChannel> UTurboLinkGrpcMa
 	args.SetInt(GRPC_ARG_KEEPALIVE_PERMIT_WITHOUT_CALLS, config->KeepAlivePermitWithoutCalls ? 1 : 0);
 	args.SetInt(GRPC_ARG_HTTP2_MAX_PINGS_WITHOUT_DATA, config->Http2MaxPingsWithoutData);
 
-	//is server-side tls mode?
-	if (config->EnableServerSideTLS)
+	if (config->EnableServerSideTLS && config->EnableJWTAuth)
+	{
+		grpc::SslCredentialsOptions ssl_opts;
+		ssl_opts.pem_root_certs = TCHAR_TO_UTF8(*(config->GetServerRootCerts()));
+		auto creds = grpc::CompositeChannelCredentials(grpc::SslCredentials(ssl_opts),
+			grpc::MetadataCredentialsFromPlugin(std::make_unique<JWTTokenAuthenticator>(TCHAR_TO_UTF8(*AuthToken))));
+		channel->RpcChannel = grpc::CreateCustomChannel(EndPoint, creds, args);
+	}
+	else if (config->EnableJWTAuth)
+	{
+		auto creds = grpc::CompositeChannelCredentials(grpc::InsecureChannelCredentials(),
+			grpc::MetadataCredentialsFromPlugin(std::make_unique<JWTTokenAuthenticator>(TCHAR_TO_UTF8(*AuthToken))));
+		channel->RpcChannel = grpc::CreateCustomChannel(EndPoint, creds, args);
+	}
+	else if (config->EnableServerSideTLS)
 	{
 		grpc::SslCredentialsOptions ssl_opts;
 		ssl_opts.pem_root_certs = TCHAR_TO_UTF8(*(config->GetServerRootCerts()));
