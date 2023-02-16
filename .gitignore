@@ -76,3 +76,7 @@ DerivedDataCache/*
 output/
 ThirdParty/*
 gen/
+*.proto
+Source/TurboLinkGrpc/Private/pb
+Source/TurboLinkGrpc/Private/SGreeter
+Source/TurboLinkGrpc/Public/SGreeter
